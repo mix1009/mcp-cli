@@ -20,13 +20,14 @@ class OpenAILLMClient(BaseLLMClient):
 
         # set the api key
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.api_url = os.getenv("OPENAI_API_URL") or "https://api.openai.com/v1"
 
         # check for an api key
         if not self.api_key:
             raise ValueError("The OPENAI_API_KEY environment variable is not set.")
         
         # set the client as open ai
-        self.client = OpenAI(api_key=self.api_key)
+        self.client = OpenAI(api_key=self.api_key, base_url=self.api_url)
 
     def create_completion(self, messages: List[Dict], tools: List = None) -> Dict[str, Any]:
         try:
